@@ -530,12 +530,14 @@ local quieted = {}
 local function QuietMouse(frame, depth)
     -- Skip panes kept live (equipment manager, skill detail) and tabs taking our clicks.
     if frame.fcuiKept or catchers[frame] then return end
-    if frame.IsMouseEnabled and frame:IsMouseEnabled() then
+    local mouseEnabled = frame.IsMouseEnabled and frame:IsMouseEnabled()
+    if not ns.IsSecret(mouseEnabled) and mouseEnabled then
         frame.fcuiMouseWas = true
         pcall(frame.EnableMouse, frame, false)
     end
     -- The wheel too: the unseen stats list under the side panel took the set list's scrolls.
-    if frame.IsMouseWheelEnabled and frame:IsMouseWheelEnabled() then
+    local wheelEnabled = frame.IsMouseWheelEnabled and frame:IsMouseWheelEnabled()
+    if not ns.IsSecret(wheelEnabled) and wheelEnabled then
         frame.fcuiWheelWas = true
         pcall(frame.EnableMouseWheel, frame, false)
     end
@@ -557,7 +559,8 @@ local function Quiet(frame)
     Take(frame, "alpha", "mouse")
     frame.fcuiKept = nil
     ns.SetAlphaIf(frame, 0, 0)
-    if not frame.fcuiQuiet or (frame.IsMouseEnabled and frame:IsMouseEnabled()) then
+    local mouseEnabled = frame.IsMouseEnabled and frame:IsMouseEnabled()
+    if not frame.fcuiQuiet or (not ns.IsSecret(mouseEnabled) and mouseEnabled) then
         frame.fcuiQuiet = true
         quieted[frame] = true
         QuietMouse(frame, 0)
