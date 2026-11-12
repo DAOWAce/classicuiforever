@@ -439,6 +439,9 @@ local function Pane(parent, side, fallback)
     pane.lines = {}
 
     local function Pick(section)
+        -- Combat-secret stats cannot be refreshed: leave the shown category and its
+        -- last values intact, and do not queue a different category silently.
+        if NumbersWithheld() then return end
         ns.db[pane.side] = section.key
         pane.offset = 0
         ns.UpdateStatPanes()
