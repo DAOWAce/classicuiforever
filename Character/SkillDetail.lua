@@ -146,6 +146,19 @@ local function SkinSkillDetail()
     local skills = SkillsFrame
     local detail = skills and skills.SkillDetailFrame
     if not detail or not CharacterFrame then return end
+    -- The native weapon hit/crit/glancing rows live in Content, which this skin
+    -- hides. On Forever their glancing API returns a secret number in combat;
+    -- the original AddWeaponSkillRows then multiplies it and errors in tainted
+    -- execution. Skip only those unused rows while the classic sheet is active.
+    -- Keep Blizzard's original method for when this sheet is disabled.
+    if not detail.fcuiNativeWeaponSkillRows and type(detail.AddWeaponSkillRows) == "function" then
+        local native = detail.AddWeaponSkillRows
+        detail.fcuiNativeWeaponSkillRows = native
+        detail.AddWeaponSkillRows = function(self, skillInfo)
+            if T.active then return end
+            return native(self, skillInfo)
+        end
+    end
     local onSkills = skills:IsShown() and true or false
     -- Visibility is not taken: a Show from here would run the pane's refresh tainted.
     Take(detail, "parent", "size", "points", "level", "clips")
