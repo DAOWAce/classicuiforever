@@ -441,8 +441,13 @@ local function Pane(parent, side, fallback)
     local function Pick(section)
         ns.db[pane.side] = section.key
         pane.offset = 0
-        ns.UpdateStatPanes()
-        -- Withheld in combat: the shown section still goes back to its top with the offset.
+        if NumbersWithheld() then
+            pane.head.text:SetText(section.label)
+            pane.lineCount = 0
+            for _, row in ipairs(pane.lines) do row:Hide() end
+        else
+            ns.UpdateStatPanes()
+        end
         Place(pane)
         SetBar(pane)
     end
