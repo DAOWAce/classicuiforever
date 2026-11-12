@@ -496,14 +496,7 @@ local function SkinListFrame(frame, barKey)
     box:ClearAllPoints()
     if barKey == "SkillsBar" then
         AnchorList(box, SKILL_LIST_SCALE, 86 + T.DETAIL_H + 14)
-        T.SkinSkillDetail()
-        local detail = frame.SkillDetailFrame
-        if detail and ns.Once(detail, "skillDetailHooked") then
-            look.pick = true
-            frame:HookScript("OnShow", T.SkinSkillDetail)
-            -- Reparented to the window, so it no longer hides with the tab.
-            frame:HookScript("OnHide", HideDetail)
-        end
+
     elseif barKey == "ReputationBar" then
         AnchorList(box, REP_LIST_SCALE, 86)
     else
