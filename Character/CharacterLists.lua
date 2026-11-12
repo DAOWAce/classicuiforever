@@ -499,7 +499,6 @@ local function SkinListFrame(frame, barKey)
         T.SkinSkillDetail()
         local detail = frame.SkillDetailFrame
         if detail and ns.Once(detail, "skillDetailHooked") then
-            ns.HookMethod(detail, "Refresh", T.SkinSkillDetail)
             look.pick = true
             frame:HookScript("OnShow", T.SkinSkillDetail)
             -- Reparented to the window, so it no longer hides with the tab.
