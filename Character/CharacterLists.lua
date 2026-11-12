@@ -197,7 +197,7 @@ local function SkinListEntry(row, barKey)
             if skills and bar.SetText then
                 hooksecurefunc(bar, "SetText", function(self, text)
                     if not T.active then return end
-                    if type(text) == "string" and text:find(" / ", 1, true) then self.Text:SetText((text:gsub(" / ", "/"))) end
+                    if type(text) == "string" and not ns.IsSecret(text) and text:find(" / ", 1, true) then self.Text:SetText((text:gsub(" / ", "/"))) end
                 end)
             end
         end
@@ -228,7 +228,7 @@ local function SkinListEntry(row, barKey)
             bar.Text:SetWidth(128)
             bar.Text:SetJustifyH("LEFT")
             local text = bar.Text:GetText()
-            if type(text) == "string" and text:find(" / ", 1, true) then bar.Text:SetText((text:gsub(" / ", "/"))) end
+            if type(text) == "string" and not ns.IsSecret(text) and text:find(" / ", 1, true) then bar.Text:SetText((text:gsub(" / ", "/"))) end
         end
     else
         name:SetPoint("LEFT", bar, "LEFT", -119, 0)
